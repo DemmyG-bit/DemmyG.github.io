@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Husbandos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 50px;
+            color: #a8b2d1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(45, 45, 68, 0.6);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(168, 178, 209, 0.1);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(168, 178, 209, 0.2);
+            border-color: rgba(168, 178, 209, 0.3);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .character-name {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #a8b2d1;
+            margin-bottom: 8px;
+        }
+
+        .series-name {
+            font-size: 0.95em;
+            color: #8892b0;
+            font-style: italic;
+        }
+
+        /* Estilos para las páginas de detalle */
+        .detail-page {
+            display: none;
+        }
+
+        .detail-page.active {
+            display: block;
+        }
+
+        .back-button {
+            background: rgba(168, 178, 209, 0.2);
+            border: 1px solid rgba(168, 178, 209, 0.3);
+            color: #a8b2d1;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .back-button:hover {
+            background: rgba(168, 178, 209, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .detail-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #a8b2d1;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .detail-image-container {
+            background: rgba(45, 45, 68, 0.6);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(168, 178, 209, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .detail-image-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(168, 178, 209, 0.2);
+        }
+
+        .detail-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .detail-title {
+                font-size: 1.8em;
+            }
+
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Página principal -->
+        <div id="main-page">
+            <h1>Galería de Personajes</h1>
+            <div class="gallery">
+                <a href="#" class="card" onclick="showDetail('luffy'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Luffy.jpg" alt="Luffy" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Monkey D. Luffy</div>
+                        <div class="series-name">One Piece</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card">
+                    <img src="d:\Descargas\juli\imagenes\Senkuu.jpg" alt="Senku" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Senku Ishigami</div>
+                        <div class="series-name">Dr. Stone</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('gojo'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Satoru.jpg" alt="Gojo" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Satoru Gojo</div>
+                        <div class="series-name">Jujutsu Kaisen</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('douma'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Douma.jpg" alt="Douma" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Douma</div>
+                        <div class="series-name">Demon Slayer</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('katakuri'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Katakuri.jpg" alt="Katakuri" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Charlotte Katakuri</div>
+                        <div class="series-name">One Piece</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('beelzebub'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Beelzebub.jpg" alt="Beelzebub" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Beelzebub</div>
+                        <div class="series-name">Record of Ragnarok</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('buda'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Buddha.jpg" alt="Buda" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Buda</div>
+                        <div class="series-name">Record of Ragnarok</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('garou'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Garou.jpg" alt="Garou" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Garou</div>
+                        <div class="series-name">One Punch Man</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('hades'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Hades.jpg" alt="Hades" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Hades</div>
+                        <div class="series-name">Record of Ragnarok</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('jack'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Jack the Ripper.jpg" alt="Jack" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Jack el Destripador</div>
+                        <div class="series-name">Record of Ragnarok</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('madara'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Madara.jpg" alt="Madara" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Madara Uchiha</div>
+                        <div class="series-name">Naruto</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('snape'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Severus Snape.jpg" alt="Severus" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Severus Snape</div>
+                        <div class="series-name">Harry Potter</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('liu'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Liu Qingge.jpg" alt="Liu" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Liu Qingge</div>
+                        <div class="series-name">Scumbag System</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('luo'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Luo binghe.jpg" alt="Luo" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Luo Binghe</div>
+                        <div class="series-name">Scumbag System</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" onclick="showDetail('giyuu'); return false;">
+                    <img src="d:\Descargas\juli\imagenes\Tomioka.jpg" alt="Giyuu" class="card-image">
+                    <div class="card-content">
+                        <div class="character-name">Giyuu Tomioka</div>
+                        <div class="series-name">Demon Slayer</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Páginas de detalle para cada personaje -->
+        <div id="detail-luffy" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Zolu</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Luffy\zolu1.jpg" alt="Zolu 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Luffy\zolu2.jpg" alt="Zolu 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Luffy\zolu3.jpg" alt="Zolu 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Luffy\zolu4.jpg" alt="Zolu 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Luffy\zolu5.jpg" alt="Zolu 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-gojo" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Sugusato</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\satoru\sugusato1.jpg" alt="Sugusato 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\satoru\sugusato2.jpg" alt="Sugusato 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\satoru\sugusato3.jpg" alt="Sugusato 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\satoru\sugusato4.jpg" alt="Sugusato 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\satoru\sugusato5.jpg" alt="Sugusato 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-douma" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Akadou y Kokudou</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\douma\akadou.jpg" alt="Akadou 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\douma\akadou2.jpg" alt="Akadou 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\douma\akadou3.jpg" alt="Akadou 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\douma\kokudou.jpg" alt="Kokudou 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\douma\kokudou2.jpg" alt="Kokudou  5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-katakuri" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Katalu</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\katakuri\katalu1.jpg" alt="KataLu 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\katakuri\KataLu2.jpg" alt="KataLu 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\katakuri\KataLu3.jpg" alt="KataLu 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\katakuri\KataLu4.jpg" alt="KataLu 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\katakuri\KataLu5.jpg" alt="KataLu 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-beelzebub" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title"> Beelhades</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\belzebud\BeelzebubxHades.jpg" alt="BeelzebubxHades 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\belzebud\BeelzebubxHades2.jpg" alt="BeelzebubxHades 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\belzebud\BeelzebubxHades3.jpg" alt="BeelzebubxHades 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\belzebud\BeelzebubxHades4.jpg" alt="BeelzebubxHades 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\belzebud\BeelzebubxHades5.jpg" alt="BeelzebubxHades 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-buda" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Budafuku</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\buda\BudaxZerofuku.jpg" alt="BudaxZerofuku 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\buda\BudaxZerofuku2.jpg" alt="BudaxZerofuku 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\buda\BudaxZerofuku3.jpg" alt="BudaxZerofuku 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\buda\BudaxZerofuku4.jpg" alt="BudaxZerofuku 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\buda\BudaxZerofuku5.jpg" alt="BudaxZerofuku 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-garou" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title"> Batarou</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\garou\GarouxMetalbat.jpg" alt="GarouxMetalbat 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\garou\GarouxMetalbat2.jpg" alt="GarouxMetalbat 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\garou\GarouxMetalbat3.jpg" alt="GarouxMetalbat 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\garou\GarouxMetalbat4.jpg" alt="GarouxMetalbat 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\garou\GarouxMetalbat5.jpg" alt="GarouxMetalbat 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-hades" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title"> Beelhades</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\hades\BeelzebubxHades.jpg" alt="BeelzebubxHades 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\hades\BeelzebubxHades2.jpg" alt="BeelzebubxHades 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\hades\BeelzebubxHades3.jpg" alt="BeelzebubxHades 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\hades\BeelzebubxHades4.jpg" alt="BeelzebubxHades 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\hades\BeelzebubxHades5.jpg" alt="BeelzebubxHades 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-jack" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Hercujack</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Jack\HercuJack.jpg" alt="HercuJack 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Jack\HercuJack2.jpg" alt="HercuJack 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Jack\HercuJack3.jpg" alt="HercuJack 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Jack\HercuJack4.jpg" alt="HercuJack 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Jack\Herjack5.jpg" alt="HercuJack 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-madara" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Hashimada</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\madara\Hashimada.jpg" alt="Hashimada 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\madara\Hashimada2.jpg" alt="Hashimada 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\madara\Hashimada3.jpg" alt="Hashimada 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\madara\Hashimada4.jpg" alt="Hashimada 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\madara\Hashimada5.jpg" alt="Hashimada 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-snape" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Ships</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Severus\SnapexJames.jpg" alt="SnapexJames 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Severus\SnapexJames2.jpg" alt="SnapexJames 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Severus\SnapexSirius.jpg" alt="SnapexSirius 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Severus\SnapexLucius.jpg" alt="SnapexLucius 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\Severus\SnapexRemus.jpg" alt="SnapexRemus 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-liu" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Liushen</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\liu\Liushen.jpg" alt="Liushen 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\liu\Liushen2.jpg" alt="Liushen 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\liu\Liushen3.jpg" alt="Liushen 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\liu\Liushen4.jpg" alt="LLiushen 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\liu\Liushen5.jpg" alt="Liushen 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-luo" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Luoshen</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\luo\Luoshen.jpg" alt="Luoshen 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\luo\Luoshen2.jpg" alt="Luoshen 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\luo\Luoshen3.jpg" alt="Luoshen 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\luo\Luoshen4.jpg" alt="Luoshen 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\luo\Luoshen5.jpg" alt="Luoshen 5" class="detail-image"></div>
+            </div>
+        </div>
+
+        <div id="detail-giyuu" class="detail-page">
+            <button class="back-button" onclick="showMain()">← Volver</button>
+            <h2 class="detail-title">Ships</h2>
+            <div class="image-grid">
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\tomioka\Sabigiyuu.jpg" alt="Sabigiyuu 1" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\tomioka\Sabigiyuu2.jpg" alt="Sabigiyuu 2" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\tomioka\Sabigiyuu3.jpg" alt="Sabigiyuu 3" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\tomioka\Giyuutan.jpg" alt="Giyuutan 4" class="detail-image"></div>
+                <div class="detail-image-container"><img src="d:\Descargas\juli\imagenes2\tomioka\Sanegiyuu.jpg" alt="Sanegiyuu 5" class="detail-image"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showDetail(character) {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('detail-' + character).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function showMain() {
+            const detailPages = document.querySelectorAll('.detail-page');
+            detailPages.forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('main-page').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
